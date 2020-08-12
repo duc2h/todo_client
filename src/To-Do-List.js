@@ -31,7 +31,7 @@ class ToDoList extends Component {
         let status = false
       axios
         .post(
-          endpoint + "/api/task",
+          endpoint + "/todo/tasks",
           {
             task,
             status
@@ -53,12 +53,11 @@ class ToDoList extends Component {
   };
 
   getTask = () => {
-    axios.get(endpoint + "/api/task/all").then(res => {
-      console.log(res);
+    axios.get(endpoint + "/todo/tasks").then(res => {
+      console.log(res.data.data);
       if (res.data) {
-          
         this.setState({
-          items: res.data.map(item => {
+          items: res.data.data.map(item => {
             let color = "yellow";
 
             if (item.status) {
@@ -68,26 +67,26 @@ class ToDoList extends Component {
               <Card key={item.id} color={color} fluid>
                 <Card.Content>
                   <Card.Header textAlign="left">
-                    <div style={{ wordWrap: "break-word" }}>{item.task}</div>
+                    <div style={{ wordWrap: "break-word" }}>{item.taskName}</div>
                   </Card.Header>
 
                   <Card.Meta textAlign="right">
                     <Icon
                       name="check circle"
                       color="green"
-                      onClick={() => this.updateTask(item.id, true)}
+                      onClick={() => this.updateTask(item.taskName, true)}
                     />
                     <span style={{ paddingRight: 10 }}>Done</span>
                     <Icon
                       name="undo"
                       color="yellow"
-                      onClick={() => this.updateTask(item.id, false)}
+                      onClick={() => this.updateTask(item.taskName, false)}
                     />
                     <span style={{ paddingRight: 10 }}>Undo</span>
                     <Icon
                       name="delete"
                       color="red"
-                      onClick={() => this.deleteTask(item.id)}
+                      onClick={() => this.deleteTask(item.taskName)}
                     />
                     <span style={{ paddingRight: 10 }}>Delete</span>
                   </Card.Meta>
@@ -104,9 +103,9 @@ class ToDoList extends Component {
     });
   };
 
-  updateTask = (id, status) => {
+  updateTask = (name, status) => {
     axios
-      .put(endpoint + "/api/task?id=" + id + "&status="+status, {
+      .put(endpoint + "/todo/tasks/" + name + "/"+status, {
         headers: {
           "Content-Type": "application/x-www-form-urlencoded"
         }
@@ -117,9 +116,9 @@ class ToDoList extends Component {
       });
   };
 
-  deleteTask = id => {
+  deleteTask = name => {
     axios
-      .delete(endpoint + "/api/task?id=" + id, {
+      .delete(endpoint + "/todo/tasks/" + name, {
         headers: {
           "Content-Type": "application/x-www-form-urlencoded"
         }

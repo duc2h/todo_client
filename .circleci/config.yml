@@ -2,7 +2,40 @@
 version: 2.1
 orbs:
   node: circleci/node@3.0.0
+  docker: circleci/docker@1.4.0
+
+jobs:
+  build-and-push:
+    enviroment: 
+      DOCKER_IMAGE: hoangduc/react-demo
+      DOCKER_TAG: latest
+    executor: docker/docker
+    steps:
+      - setup_remote_docker
+      - checkout
+      - docker/check:
+        docker-username: DOCKER_USERNAME
+        docker-password: DOCKER_PASSWORD
+      - docker/build:
+          image: $DOCKER_IMAGE
+          tag: $DOCKER_TAG
+
+      - docker/push:
+          digest-path: /tmp/digest.txt
+          image: $DOCKER_IMAGE
+          tag: $DOCKER_TAG
+      - run:
+          command: |
+            echo "Digest is: $(</tmp/digest.txt)"
+
 workflows:
-  node-tests:
+  test-deploy:
     jobs:
       - node/test
+      - build-and-push:
+        requires: 
+          - node/test
+        filters:
+          branches:
+            only:
+              - master

@@ -6,7 +6,7 @@ orbs:
 
 jobs:
   build-and-push:
-    enviroment: 
+    environment: 
       DOCKER_IMAGE: hoangduc/react-demo
       DOCKER_TAG: latest
     executor: docker/docker

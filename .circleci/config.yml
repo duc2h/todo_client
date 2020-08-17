@@ -1,4 +1,4 @@
-# my config 1
+# my config
 version: 2.1
 orbs:
   node: circleci/node@3.0.0

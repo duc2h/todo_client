@@ -1,0 +1,6 @@
+version: "3.3"
+services: 
+    mywebsite:
+        image: hoangduc02011998/todo_client:latest
+        ports: 
+            - "3000:80"

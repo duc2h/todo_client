@@ -30,8 +30,8 @@ jobs:
     executor: docker/docker
     steps:
       - add_ssh_keys:
-        fingerprint: 
-          - "1c:17:b3:31:ed:d0:f7:86:9f:8e:4f:a5:47:ce:41:ba"
+          fingerprint: 
+            - "1c:17:b3:31:ed:d0:f7:86:9f:8e:4f:a5:47:ce:41:ba"
       - run: ssh -oStrictHostKeyChecking=no circleci@188.166.191.61 './deploy.sh'
 
 workflows:
